@@ -8,3 +8,4 @@ class sitemap(Item):
     citydomain  = Field()
     price       = Field()
     url         = Field()
+    created     = Field()

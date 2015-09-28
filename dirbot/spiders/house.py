@@ -44,5 +44,7 @@ class houseSpider(Spider):
             item['citydomain']  = geojson['citydomain']  
             prices              = x.xpath("//li[@class='clearfix']/b[@class='basic-info-price fl']/text()").extract() 
             item['price']       = prices[0]
+            created             = x.xpath("//i[@class='f10 pr-5']/text()").extract()
+            item['created']     = created[0]
         return item
         

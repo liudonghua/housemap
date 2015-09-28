@@ -5,12 +5,16 @@ from scrapy.exceptions import DropItem
 class savePipeline(object):
   
     def process_item(self, item, spider):
-#  for item in items:
-        map    = Bdmap(url      = item['url'],
-                      lnglat    = item['lnglat'],
-                      city      = item['city'],
-                      citydomain= item['citydomain'],
-                      price     = item['price'],
+        geos    = item['lnglat'].split(',')
+        geo_lat = geos[1];
+        geo_lng = geos[0].lstrip('b')
+        map     = Bdmap(url       = item['url'],
+                        lng       = geo_lng,
+                        lat       = geo_lat,
+                        city      = item['city'],
+                        citydomain= item['citydomain'],
+                        price     = item['price'],
+                        created   = item['created']
                       )
         try:
             map.save()
