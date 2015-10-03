@@ -8,7 +8,7 @@ class savePipeline(object):
         geos    = item['lnglat'].split(',')
         geo_lat = geos[1];
         geo_lng = geos[0].lstrip('b')
-        map     = Bdmap(url       = item['url'],
+        maps     = Bdmap(url       = item['url'],
                         lng       = geo_lng,
                         lat       = geo_lat,
                         city      = item['city'],
@@ -17,8 +17,8 @@ class savePipeline(object):
                         created   = item['created']
                       )
         try:
-            map.save()
+            maps.save()
             print "save data !"
         except IntegrityError:
-          raise DropItem("Contains duplicate domain: %s" % item['url'])
+            raise DropItem("Contains duplicate domain: %s" % item['url'])
         return item

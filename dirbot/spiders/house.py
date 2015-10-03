@@ -1,13 +1,8 @@
-import exceptions
-import json
 from scrapy import Request
 from scrapy.selector import Selector
 from scrapy.spiders import Spider
-from scrapy.utils.response import open_in_browser
-import urllib
-
 from dirbot.items import sitemap
-
+import json
 
 class houseSpider(Spider):
     name = "house"
@@ -17,7 +12,6 @@ class houseSpider(Spider):
     ]
 
     def parse(self, response):
-        items   = []
         x         = Selector(response)
         sites = x.xpath('//a[@class="img-box"]/@href').extract()
         
@@ -35,8 +29,7 @@ class houseSpider(Spider):
 
         x                   = Selector(response)
         geos                = x.xpath("//div[@id='map_load']/@data-ref").extract()
-        if geos!=None   :
-
+        if geos!=[]:
             geojson             = json.loads(geos[0],encoding='utf-8');
             item['url']         = response.url.encode('UTF-8')
             item['lnglat']      = geojson['lnglat']
