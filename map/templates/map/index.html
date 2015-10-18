@@ -69,18 +69,24 @@ function showPosition(position)
 				south	: bssw.lat,
 				north	: bsne.lat,
 			};
-			$.getJSON('getRange/',data,function(array){
-				var datas	= array.data;
-				console.log(datas.length);
+			$.getJSON('getRange/',data,function(arrays){
+				var datas	= arrays.data;
+				//var mymarkers = new Array();
 				for(key in datas){
 					var data= datas[key];
-					console.log('location:'+data.lng+','+data.lat);
-					var html2 =  '<label class=" BMapLabel" style="position: absolute; display: inline;border: 1px solid; padding: 2px 1px 1px; white-space: nowrap; font: 12px arial,simsun; z-index: 80; color: rgb(255, 102, 0); left: 15px; top: -35px;"> '+data.price+'</label>',
-					      myRichMarker2 = new BMapLib.RichMarker(html2,  new BMap.Point(data.lng,data.lat),{
+					
+					var html2 =  '<label class=" BMapLabel" style="position: absolute; display: inline;border: 1px solid; padding: 2px 1px 1px; white-space: nowrap; font: 16px arial,simsun; z-index: 80; color: rgb(255, 102, 0); left: 15px; top: -35px;"> '+data.price+'</label>';
+			        html2+='<input class="url" type="hidden" value="'+data.url+'" />';
+			        var mymarker = new BMapLib.RichMarker(html2,  new BMap.Point(data.lng,data.lat),{
 					                                                  "anchor" : new BMap.Size(-18, -27),
 																	  "enableDragging" : false});
-					myRichMarker2.addEventListener('click',function(){window.open(data.url);});
-					map.addOverlay(myRichMarker2);
+					
+					mymarker.addEventListener('onclick',function(){
+						var urlelems= this._container.getElementsByClassName('url');
+						var url		= urlelems[0].value;
+						window.open(url);
+						},false);
+					map.addOverlay(mymarker);
 				
 			
 				}
