@@ -9,3 +9,4 @@ class sitemap(Item):
     price       = Field()
     url         = Field()
     created     = Field()
+    detail      = Field()

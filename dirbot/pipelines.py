@@ -6,12 +6,13 @@ class savePipeline(object):
   
     def process_item(self, item, spider):
         geos    = item['lnglat'].split(',')
-        geo_lat = geos[1];
+        geo_lat = geos[1]
         geo_lng = geos[0].lstrip('b')
         maps     = Bdmap(url       = item['url'],
                         lng       = geo_lng,
                         lat       = geo_lat,
                         city      = item['city'],
+                        detail    = item['detail'],
                         citydomain= item['citydomain'],
                         price     = item['price'],
                         created   = item['created']
