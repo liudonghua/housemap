@@ -18,6 +18,7 @@ def getRange(request):
                                     ).filter(lng__lt=range['east']
                                     ).filter(lat__gt=range['south']
                                     ).filter(lat__lt=range['north']
+                                    ).order_by('-created'
                                     ).values('url','price','lng','lat')
         if locations!=[]:
             return JsonResponse(dict(data=list(locations)))
