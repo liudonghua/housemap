@@ -23,4 +23,3 @@ def getRange(request):
         if locations!=[]:
             return JsonResponse(dict(data=list(locations)))
         return '[]'
-

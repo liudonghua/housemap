@@ -2,7 +2,7 @@
 import os
 import django
 
-
+DOWNLOAD_HANDLERS = {'s3': None,}
 SPIDER_MODULES = ['dirbot.spiders']
 NEWSPIDER_MODULE = 'dirbot.spiders'
 DEFAULT_ITEM_CLASS = 'dirbot.items.sitemap'

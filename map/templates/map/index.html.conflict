@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>juzheyouqiwu</title>
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=4njKw2jG5KoKs6Rha1D2G3L2"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/RichMarker/1.2/src/RichMarker_min.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
+<style>
+	html,body{
+		height:100%;
+		width:100%;
+		margin:0;
+		padding:0
+	}
+</style>
+</head>
+<body>{% load staticfiles %}
+<div style="width:100%;height:100%;border:1px solid gray;margin:0;" id="container">
+</div>
+<div onclick="getLocation();" style="position:absolute;right:10px;top:10px;width:10%;z-index:1000;">
+<img src="{{STATIC_URL}}img/location.png" width="100%" height="100%"/>
+</div>
+<script type="text/javascript">
+
+window.onload =getLocation;
+
+function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition);
+    }
+  else{alert("please turn on geography switch!");}
+  }
+function showPosition(position)
+  {
+  	lng = position.coords.longitude;  
+  	lat	= position.coords.latitude;
+	console.log('lng:'+lng);
+	console.log('lat:'+lat);
+	setTimeout(function(){
+		var convertor = new BMap.Convertor();
+		var pointArr = [];
+		var ggPoint = new BMap.Point(lng,lat);
+		pointArr.push(ggPoint);
+		convertor.translate(pointArr, 1, 5, translateCallback);
+	},1000);
+
+    //坐标转换完之后的回调函数
+    translateCallback = function (data){
+      if(data.status === 0) {
+	  	var map = new BMap.Map("container");
+		map.centerAndZoom(data.points[0], 17);
+		map.enableScrollWheelZoom();
+        var marker = new BMap.Marker(data.points[0]);
+        map.addOverlay(marker); 
+        map.addEventListener("tilesloaded",showHouse); 
+	    function showHouse()	
+		{
+			var bs	 = map.getBounds();   //获取可视区域
+			var bssw = bs.getSouthWest();   //可视区域左下角
+			var bsne = bs.getNorthEast(); 
+			var data = {
+				east	: bsne.lng,
+				west	: bssw.lng,
+				south	: bssw.lat,
+				north	: bsne.lat,
+			};
+			$.getJSON('getRange/',data,function(arrays){
+				var datas	= arrays.data;
+				//var mymarkers = new Array();
+				for(key in datas){
+					var data= datas[key];
+					
+					var html2 =  '<label class=" BMapLabel" style="position: absolute; display: inline;border: 1px solid; padding: 2px 1px 1px; white-space: nowrap; font: 16px arial,simsun; z-index: 80; color: rgb(255, 102, 0); left: 15px; top: -35px;"> '+data.price+'</label>';
+			        html2+='<input class="url" type="hidden" value="'+data.url+'" />';
+			        var mymarker = new BMapLib.RichMarker(html2,  new BMap.Point(data.lng,data.lat),{
+					                                                  "anchor" : new BMap.Size(-18, -27),
+																	  "enableDragging" : false});
+					
+					mymarker.addEventListener('onclick',function(){
+						var urlelems= this._container.getElementsByClassName('url');
+						var url		= urlelems[0].value;
+						window.open(url);
+						},false);
+					map.addOverlay(mymarker);
+				
+			
+				}
+			});
+		 }
+      }
+    };
+
+
+}
+</script>
+
+</body>
+</html>
