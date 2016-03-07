@@ -3,6 +3,7 @@ from scrapy import Request
 from scrapy.selector import Selector
 from scrapy.spiders import Spider
 from dirbot.items import sitemap
+import html2text
 import json
 
 class houseSpider(Spider):
@@ -63,13 +64,12 @@ class houseSpider(Spider):
         for site in  x.css('li.list-img'):
             urls= site.xpath('div[@class="list-mod1"]/a[@class="img-box"]/@href').extract()
             url = url_base+urls[0]
-            detail              = site.xpath('text()').extract()
+            detail              = site.css('p.list-word span').xpath('text()').extract()
             details             =  [t.encode('utf-8') for t in detail]
             self.detail         = ''.join(details)
             request             = Request(url,callback=self.subparse)
             yield request
             
-
     def subparse(self,response):
         item = sitemap() 
         x                   = Selector(response)
