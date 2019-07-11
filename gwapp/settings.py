@@ -8,23 +8,24 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3ll1sz*%it8q@rulv8d147v*n^7wfr0kk51qe^t^jxuwliu889'
+SECRET_KEY = '=n6ry1lm8e@59on8_b(p!^^wt_vz@0$2)rhkfe_e**@wk#lj=9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 FORCE_SCRIPT_NAME=""
-TEMPLATE_DEBUG = True
+#TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['j.cn','192.168.2.196','120.25.147.112']
+ALLOWED_HOSTS = ['j.cn','127.0.0.1']
 
 
 # Application definition
@@ -40,14 +41,38 @@ INSTALLED_APPS = (
     'dirbot',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 )
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 ROOT_URLCONF = 'gwapp.urls'
 
@@ -57,22 +82,22 @@ WSGI_APPLICATION = 'gwapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-	'NAME': 'housemap', 
-        'USER': 'root',
-        'PASSWORD': 'cocopark12', 
-        'HOST': '', 
-        'PORT': '',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+   }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql', 
+# 	'NAME': 'housemap', 
+#         'USER': 'root',
+#         'PASSWORD': 'cocopark12', 
+#         'HOST': '', 
+#         'PORT': '',
+#     }
+# }
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 

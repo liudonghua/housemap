@@ -1,14 +1,15 @@
-from django.conf.urls import patterns, include, url
-
+from django.conf.urls import url, include
 from django.contrib import admin
+
+from map.views import getRange
+
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
-    url(r'^$', 'map.views.index', name='index'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^getRange/','map.views.getRange',name='getRange'),
-)
+    url(r'^admin/', admin.site.urls),
+    url(r'^getRange/',getRange,name='getRange')
+]
     

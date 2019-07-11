@@ -19,7 +19,7 @@ class savePipeline(object):
                       )
         try:
             maps.save()
-            print "save data !"
+            print("save data !")
         except IntegrityError:
             raise DropItem("Contains duplicate domain: %s" % item['url'])
         return item

@@ -6,12 +6,11 @@ import json
 from django.http import JsonResponse
 # Create your views here.
 
-def index(request):
-    return render(request, 'map/index.html')
     
 def getRange(request):
         now         = datetime.datetime.now()
-        range       = request.GET
+        range       = request.POST
+        
         locations   = []
         locations   = Bdmap.objects.filter(created__gte=datetime.datetime(now.year,now.month-1,now.day,tzinfo=None)
                                     ).filter(lng__gt=range['west']
@@ -20,6 +19,9 @@ def getRange(request):
                                     ).filter(lat__lt=range['north']
                                     ).order_by('-created'
                                     ).values('url','price','lng','lat')
+
         if locations!=[]:
-            return JsonResponse(dict(data=list(locations)))
+            resp = JsonResponse(data=list(locations),safe=False)
+            if resp!=False:
+                return resp
         return '[]'
