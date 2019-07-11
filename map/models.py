@@ -10,3 +10,6 @@ class Bdmap(models.Model):
     price       = models.IntegerField()
     citydomain  = models.CharField(max_length=2)
     created     = models.DateTimeField('date created')    
+
+    def __str__(self):
+        return self.url
