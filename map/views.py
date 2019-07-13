@@ -18,10 +18,10 @@ def getRange(request):
                                     ).filter(lat__gt=range['south']
                                     ).filter(lat__lt=range['north']
                                     ).order_by('-created'
-                                    ).values('url','price','lng','lat')
+                                    ).values('price','lng','lat','url')[0:50]
 
         if locations!=[]:
-            resp = JsonResponse(data=list(locations),safe=False)
-            if resp!=False:
-                return resp
+            #return JsonResponse(data=list(locations),safe=False)
+            return JsonResponse(dict(data=list(locations)))
+           
         return '[]'
