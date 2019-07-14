@@ -3,8 +3,9 @@ from scrapy.item import Item, Field
 
 class sitemap(Item):
 
-    lnglat      = Field()
-    city        = Field()
+    lng         = Field()
+    lat         = Field()
+    img         = Field()
     citydomain  = Field()
     price       = Field()
     url         = Field()
