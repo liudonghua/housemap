@@ -94,26 +94,44 @@ class houseSpider(Spider):
         items = x.css('#f_mew_list > div.f-main.f-clear.f-w1190 > div.f-main-left.f-fl.f-w980 > div.f-main-list > div > div.f-list-item.ershoufang-list')
          
         for item in items:
-            self.res['url']     =    item.xpath('dl/dd[@class="dd-item title"]/a/@href').extract()[0]
+            self.res['url']     =    response.urljoin(item.xpath('dl/dd[@class="dd-item title"]/a/@href').extract()[0])
             if self.res['url']=='':
                 continue
             self.res['img']     =    item.xpath('dl/dt/div/a/img/@src').extract()[0]
-            
-            self.res['detail']  =    item.xpath('dl/dd[@class="dd-item size"]/text()').extract()[0].encode('UTF-8')
+            self.res['detail']  = ''
+            details  =    item.xpath('dl/dd[@class="dd-item size"]/span').extract()
+            for detail in details:
+                self.res['detail']+=detail    
+
             price               =    item.xpath('dl/dd[@class="dd-item info"]/div[@class="price"]/span/text()').extract()
             if  price[1]!="元/月":
                 continue
             self.res['price']   =    price[0]
-            yield Request(self.res['url'],callback=self.subparse)
-            
+            request             =    Request(self.res['url'],callback=self.subparse,meta = {"handle_httpstatus_list":[302,301,403]})
+            yield request
+
+    # def parse_redirect(self,response):
+    #     print(''+response.headers.location)
+    #     request  =   Request(response.urljoin(response.headers.location),callback=self.subparse)
+    #     yield request 
+
     def subparse(self,response):
         x   = Selector(response)
-        json4fes     = x.xpath('//script[@type="text/javascript]').extract()
-        if json4fes.len()>1:
-            coord = re.split('.(d\.d).(d\.d).\'(D)\'.',json4fes[1])
-            if coord.len()==3:
-                self.res['lat']        = coord[0]
-                self.res['lng']        = coord[1]
-                self.res['cityDomain'] = coord[2]   
-            return self.res
+        json4fes     = x.xpath('//script[@type="text/javascript"]/text()').extract()
+        if len(json4fes)>1:
+            coords = re.split("\n",json4fes[1])
+            for coord in coords:
+                lat = re.findall(r'____json4fe.bdLat = \'(\d+\.\d+)\';$',coord)
+                if len(lat)>0 and lat[0]!='':
+                    self.res['lat'] = lat[0]
+                    continue
+                lng = re.findall(r'____json4fe.bdLon = \'(\d+\.\d+)\';$',coord)
+                if len(lng)>0 and lng[0]!='':
+                    self.res['lng'] = lng[0]
+                    continue
+                cityDomain = re.findall(r'____json4fe.cityDomain = \'(\D+)\';$',coord)
+                if len(cityDomain)>0 and cityDomain[0]!='':
+                    self.res['citydomain']  = cityDomain[0]
+            return self.res        
+
         return []

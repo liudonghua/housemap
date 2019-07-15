@@ -6,6 +6,8 @@ import datetime
 class savePipeline(object):
   
     def process_item(self, item, spider):
+        if item==[]:
+            return []
         maps     = Bdmap(url      = item['url'],
                         lng       = item['lng'],
                         lat       = item['lat'],
