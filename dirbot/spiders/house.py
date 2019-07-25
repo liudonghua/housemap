@@ -6,6 +6,7 @@ from dirbot.items import sitemap
 import html2text
 import json
 import re
+import time
 
 
 class houseSpider(Spider):
@@ -92,8 +93,9 @@ class houseSpider(Spider):
     def parse(self,response):
         x    = Selector(response)
         items = x.css('#f_mew_list > div.f-main.f-clear.f-w1190 > div.f-main-left.f-fl.f-w980 > div.f-main-list > div > div.f-list-item.ershoufang-list')
-         
+        time.sleep(2) 
         for item in items:
+            time.sleep(2)
             self.res['url']     =    response.urljoin(item.xpath('dl/dd[@class="dd-item title"]/a/@href').extract()[0])
             if self.res['url']=='':
                 continue
@@ -107,7 +109,7 @@ class houseSpider(Spider):
             if  price[1]!="元/月":
                 continue
             self.res['price']   =    price[0]
-            request             =    Request(self.res['url'],callback=self.subparse,meta = {"handle_httpstatus_list":[302,301,403]})
+            request             =    Request(self.res['url'],callback=self.subparse,meta = {"handle_httpstatus_list":[302,301]})
             yield request
 
     # def parse_redirect(self,response):

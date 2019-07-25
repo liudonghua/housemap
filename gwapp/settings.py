@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=n6ry1lm8e@59on8_b(p!^^wt_vz@0$2)rhkfe_e**@wk#lj=9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 FORCE_SCRIPT_NAME=""
 #TEMPLATE_DEBUG = True
 
@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'map',
     'dirbot',
-)
+]
 
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'gwapp.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+       'NAME': os.path.join(BASE_DIR, 'map.db'),
    }
 }
 # DATABASES = {
