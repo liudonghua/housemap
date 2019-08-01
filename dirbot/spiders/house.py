@@ -14,7 +14,7 @@ class houseSpider(Spider):
     name = "house"
     allowed_domains = ["ganji.com"]
     start_urls = [
-		#"http://sz.ganji.com/zufang/",
+		"http://sz.ganji.com/zufang/",
         "http://gz.ganji.com/zufang/",
         "http://bj.ganji.com/zufang/",
         "http://sh.ganji.com/zufang/",
