@@ -8,7 +8,7 @@ SPIDER_MODULES = ['dirbot.spiders']
 NEWSPIDER_MODULE = 'dirbot.spiders'
 DEFAULT_ITEM_CLASS = 'dirbot.items.sitemap'
 ITEM_PIPELINES = {'dirbot.pipelines.savePipeline': 1}
-DOWNLOAD_DELAY = 5
+DOWNLOAD_DELAY = 2
 
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
 COOKIES_ENABLED = False
